@@ -28,7 +28,7 @@ namespace FileProvider.Services
             _containerClient = _client.GetBlobContainerClient(containerName);
 
             //Denna del skapar en container om den inte existerar...
-            await _containerClient.CreateIfNotExistsAsync();
+            await _containerClient.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
         }
 
         public string SetFileName(IFormFile file)
