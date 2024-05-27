@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy dotnet core app to Azure Function App - EJM-FileProvider
+name: Build and deploy dotnet core app to Azure Function App - ejm-fileprovider
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'EJM-FileProvider'
+          app-name: 'ejm-fileprovider'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E1B89818BBA44ABCBEC378A1C46B9DA9 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E8642799291745B097E1A1E8A4ED42C7 }}
