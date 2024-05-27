@@ -57,7 +57,7 @@ namespace FileProvider.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Something went wreong when uploading file :: " + ex.Message);
+                _logger.LogError("Something went wrong when uploading file :: " + ex.Message);
                 return null!;
             }
         }
