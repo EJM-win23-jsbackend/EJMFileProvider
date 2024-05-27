@@ -8,29 +8,29 @@ using Microsoft.Extensions.Logging;
 
 namespace FileProvider.Functions
 {
-    public class Uploads
+    public class UploadProfileImage
     {
-        private readonly ILogger<Uploads> _logger;
+        private readonly ILogger<UploadProfileImage> _logger;
         private readonly FileService _fileService;
 
-        public Uploads(ILogger<Uploads> logger, FileService fileService)
+        public UploadProfileImage(ILogger<UploadProfileImage> logger, FileService fileService)
         {
             _logger = logger;
             _fileService = fileService;
         }
 
         [Function("Uploads")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "uploadprofilepicture/{userId}")] HttpRequest req, string userId)
         {
             try
             {
                 //Form är att dett formulär skickas med http, Files är samling filer som finns i formuläret och ["files"] gör så att vi bara hämtar denna fil från samlingen.
                 if (req.Form.Files["file"] is IFormFile file)
                 {
-                    var containerName = !string.IsNullOrEmpty(req.Query["containerName"]) ? req.Query["containerName"].ToString() : "files";
+                    var containerName = "profileimages";
                     var fileEntity = new FileEntity
                     {
-                        FileName = _fileService.SetFileName(file),
+                        FileName = _fileService.SetFileName(userId),
                         ContentType = file.ContentType,
                         ContainerName = containerName
                     };

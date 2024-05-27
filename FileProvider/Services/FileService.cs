@@ -5,6 +5,7 @@ using Data.Contexts;
 using Data.Entities;
 using FileProvider.Functions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace FileProvider.Services
@@ -12,11 +13,11 @@ namespace FileProvider.Services
     public class FileService
     {
         private readonly DataContext _dataContext;
-        private readonly ILogger<Uploads> _logger;
+        private readonly ILogger<UploadProfileImage> _logger;
         private readonly BlobServiceClient _client;
         private BlobContainerClient _containerClient;
 
-        public FileService(DataContext dataContext, ILogger<Uploads> logger, BlobServiceClient client)
+        public FileService(DataContext dataContext, ILogger<UploadProfileImage> logger, BlobServiceClient client)
         {
             _dataContext = dataContext;
             _logger = logger;
@@ -31,26 +32,34 @@ namespace FileProvider.Services
             await _containerClient.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
         }
 
-        public string SetFileName(IFormFile file)
+        public string SetFileName(string userId)
         {
-            var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+            var fileName = userId;
             return fileName;
         }
 
         public async Task<string> UploadFileAsync(IFormFile file, FileEntity fileEntity)
         {
-            BlobHttpHeaders headers = new BlobHttpHeaders
+            try
             {
-                ContentType = file.ContentType,
-            };
+                BlobHttpHeaders headers = new BlobHttpHeaders
+                {
+                    ContentType = file.ContentType,
+                };
 
-            var blobClient = _containerClient.GetBlobClient(fileEntity.FileName);
+                var blobClient = _containerClient.GetBlobClient(fileEntity.FileName);
 
-            using var stream = file.OpenReadStream();
+                using var stream = file.OpenReadStream();
 
-            await blobClient.UploadAsync(stream, headers);
+                await blobClient.UploadAsync(stream, headers);
 
-            return blobClient.Uri.ToString();
+                return blobClient.Uri.ToString();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Something went wreong when uploading file :: " + ex.Message);
+                return null!;
+            }
         }
 
         public async Task SaveToDatabaseAsync(FileEntity fileEntity)
@@ -58,7 +67,6 @@ namespace FileProvider.Services
             _dataContext.Files.Add(fileEntity);
             await _dataContext.SaveChangesAsync();
 
-        }
-            
+        }          
     }
 }
