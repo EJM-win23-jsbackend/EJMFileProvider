@@ -39,4 +39,4 @@ jobs:
           app-name: 'ejm-fileprovider'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E8642799291745B097E1A1E8A4ED42C7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_936C686E1BB347B2925634D826B610B8 }}
