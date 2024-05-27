@@ -19,7 +19,7 @@ namespace FileProvider.Functions
         }
 
         [Function("UploadCourseImages")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "/uploadcoursepicture/{courseId}")] HttpRequest req, string courseId)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "uploadcoursepicture/{courseId}")] HttpRequest req, string courseId)
         {
             try
             {

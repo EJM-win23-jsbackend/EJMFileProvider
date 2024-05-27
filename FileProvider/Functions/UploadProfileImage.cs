@@ -19,8 +19,8 @@ namespace FileProvider.Functions
             _fileService = fileService;
         }
 
-        [Function("Uploads")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "uploadprofilepicture/{userId}")] HttpRequest req, string userId)
+        [Function("UploadProfileImage")]
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "uploadprofileimage/{userId}")] HttpRequest req, string userId)
         {
             try
             {

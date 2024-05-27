@@ -16,19 +16,19 @@ namespace FileProvider.Functions
         }
 
         [Function("DownloadCourseImage")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "getCourseImage/{name}")] HttpRequest req, string name)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "getCourseImage/{courseId}")] HttpRequest req, string courseId)
         {
             string connectionString = Environment.GetEnvironmentVariable("AzureStorageAccount");
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("courseimages");
-            BlobClient blobClient = containerClient.GetBlobClient(name);
+            BlobClient blobClient = containerClient.GetBlobClient(courseId);
 
             try
             {
                 var downloadFile = await blobClient.DownloadAsync();
                 return new FileStreamResult(downloadFile.Value.Content, downloadFile.Value.ContentType)
                 {
-                    FileDownloadName = name
+                    FileDownloadName = courseId
                 };
             }
             catch (Exception ex)
